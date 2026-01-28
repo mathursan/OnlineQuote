@@ -60,7 +60,7 @@ Owner: AI Agent
    - Search radius selector: "Within 5 miles" (dropdown: 1, 5, 10, 25, 50 miles)
    - Large "Find Best Prices" button
 
-2. **Search Input** ([Mock: search-input.html](mocks/search-input.html))
+2. **Search Input** (Part of Landing Page - see [Mock: landing-page.html](mocks/landing-page.html))
    - User types item description: "iPhone 15 Pro 256GB Black"
    - Auto-complete suggestions appear as user types
    - Option to upload product image for visual search (future enhancement)
