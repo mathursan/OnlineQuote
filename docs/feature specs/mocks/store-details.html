@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Details - OnlineQuote</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: rgba(0, 0, 0, 0.5);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-header {
+            padding: 32px 32px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: #f3f4f6;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #e5e7eb;
+            transform: rotate(90deg);
+        }
+
+        .store-header {
+            display: flex;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .store-logo-large {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .store-title-section {
+            flex: 1;
+        }
+
+        .store-name-large {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .store-address {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .store-rating-large {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .stars-large {
+            color: #fbbf24;
+            font-size: 16px;
+        }
+
+        .modal-body {
+            padding: 32px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .price-info {
+            background: linear-gradient(to right, #f0fdf4, white);
+            border: 2px solid #10b981;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .current-price-large {
+            font-size: 48px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 8px;
+        }
+
+        .price-details {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .price-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-detail-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .price-detail-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .stock-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stock-badge.in-stock {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: start;
+            gap: 12px;
+        }
+
+        .info-icon {
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .chart-container {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .review-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .review-stars {
+            color: #fbbf24;
+            margin-bottom: 8px;
+        }
+
+        .review-text {
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .action-btn-large {
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .primary-btn-large {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .primary-btn-large:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .secondary-btn-large {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .secondary-btn-large:hover {
+            background: #f3f4f6;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 24px 20px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .primary-btn-large {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="modal">
+        <div class="modal-header">
+            <button class="close-btn" onclick="closeModal()">✕</button>
+            <div class="store-header">
+                <div class="store-logo-large">🎯</div>
+                <div class="store-title-section">
+                    <h1 class="store-name-large">Target</h1>
+                    <div class="store-address">📍 1234 Main St, Seattle, WA 98101</div>
+                    <div class="store-rating-large">
+                        <span class="stars-large">⭐⭐⭐⭐⭐</span>
+                        <span>4.8 (2,341 reviews)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <!-- Price Section -->
+            <div class="price-info">
+                <div class="current-price-large">$999.00</div>
+                <div class="price-details">
+                    <div class="price-detail">
+                        <div class="price-detail-label">Original Price</div>
+                        <div class="price-detail-value" style="text-decoration: line-through; color: #9ca3af;">$1,099.00
+                        </div>
+                    </div>
+                    <div class="price-detail">
+                        <div class="price-detail-label">You Save</div>
+                        <div class="price-detail-value" style="color: #10b981;">$100.00 (9%)</div>
+                    </div>
+                    <div class="price-detail">
+                        <div class="price-detail-label">Availability</div>
+                        <div class="price-detail-value">
+                            <span class="stock-badge in-stock">✓ In Stock</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Store Information -->
+            <div class="section">
+                <h2 class="section-title">Store Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div class="info-content">
+                            <div class="info-label">Phone</div>
+                            <div class="info-value">(206) 555-0123</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🕐</div>
+                        <div class="info-content">
+                            <div class="info-label">Hours Today</div>
+                            <div class="info-value">8:00 AM - 10:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div class="info-content">
+                            <div class="info-label">Distance</div>
+                            <div class="info-value">2.3 miles away</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🌐</div>
+                        <div class="info-content">
+                            <div class="info-label">Website</div>
+                            <div class="info-value" style="color: #667eea; cursor: pointer;">target.com</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price History -->
+            <div class="section">
+                <h2 class="section-title">Price History (Last 30 Days)</h2>
+                <div class="chart-container">
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 12px;">📊</div>
+                        <div>Price trend chart would appear here</div>
+                        <div style="font-size: 12px; margin-top: 8px;">Lowest: $999 | Highest: $1,149 | Average: $1,049
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Reviews -->
+            <div class="section">
+                <h2 class="section-title">Recent Reviews</h2>
+                <div class="reviews-list">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer-name">Sarah M.</span>
+                            <span class="review-date">2 days ago</span>
+                        </div>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <div class="review-text">
+                            Great experience! Staff was helpful and they had the exact model I wanted in stock. Price
+                            was competitive too.
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer-name">John D.</span>
+                            <span class="review-date">1 week ago</span>
+                        </div>
+                        <div class="review-stars">⭐⭐⭐⭐</div>
+                        <div class="review-text">
+                            Good selection and prices. Checkout was a bit slow but overall satisfied with my purchase.
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer-name">Emily R.</span>
+                            <span class="review-date">2 weeks ago</span>
+                        </div>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <div class="review-text">
+                            Best price I found in the area! Clean store, friendly staff, and easy parking.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn-large primary-btn-large" onclick="getDirections()">
+                    📍 Get Directions
+                </button>
+                <button class="action-btn-large secondary-btn-large" onclick="callStore()">
+                    📞 Call Store
+                </button>
+                <button class="action-btn-large secondary-btn-large" onclick="visitWebsite()">
+                    🌐 Visit Website
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeModal() {
+            window.history.back();
+        }
+
+        function getDirections() {
+            console.log('Opening directions...');
+            alert('Opening Google Maps with directions to Target...');
+        }
+
+        function callStore() {
+            console.log('Calling store...');
+            window.location.href = 'tel:+12065550123';
+        }
+
+        function visitWebsite() {
+            console.log('Visiting website...');
+            window.open('https://www.target.com', '_blank');
+        }
+    </script>
+</body>
+
+</html>

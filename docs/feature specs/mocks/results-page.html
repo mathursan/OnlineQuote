@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Comparison Results - OnlineQuote</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9fafb;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .search-again {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-again input {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            width: 300px;
+            font-size: 14px;
+        }
+
+        .search-again button {
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-again button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .results-header {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .product-info {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .product-details h1 {
+            font-size: 28px;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .product-meta {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 16px;
+        }
+
+        .price-summary {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .price-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .price-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .best-price {
+            color: #10b981;
+        }
+
+        .avg-price {
+            color: #6b7280;
+        }
+
+        .savings {
+            color: #667eea;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            background: white;
+            padding: 4px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #6b7280;
+        }
+
+        .view-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 16px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .store-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.5s ease-out;
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .store-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .store-card.best-deal {
+            border: 2px solid #10b981;
+            background: linear-gradient(to right, #f0fdf4, white);
+        }
+
+        .best-deal-badge {
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .store-logo {
+            width: 64px;
+            height: 64px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .store-info {
+            flex: 1;
+        }
+
+        .store-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .store-details {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .store-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .stars {
+            color: #fbbf24;
+        }
+
+        .stock-status {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .in-stock {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .low-stock {
+            background: #fed7aa;
+            color: #92400e;
+        }
+
+        .out-of-stock {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .price-section {
+            text-align: right;
+        }
+
+        .current-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .original-price {
+            font-size: 14px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-bottom: 4px;
+        }
+
+        .discount {
+            font-size: 12px;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .secondary-btn:hover {
+            background: #f3f4f6;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 968px) {
+            .store-card {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .price-section {
+                text-align: left;
+            }
+
+            .actions {
+                flex-direction: row;
+            }
+
+            .search-again {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-again input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo" onclick="window.location.href='landing-page.html'">💰 OnlineQuote</div>
+            <div class="search-again">
+                <input type="text" placeholder="Search for another item..." id="newSearch">
+                <button onclick="searchAgain()">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="results-header">
+            <div class="product-info">
+                <div class="product-image">📱</div>
+                <div class="product-details">
+                    <h1>iPhone 15 Pro 256GB Black</h1>
+                    <div class="product-meta">8 stores found • Near Seattle, WA • Within 5 miles</div>
+                </div>
+            </div>
+            <div class="price-summary">
+                <div class="price-stat">
+                    <div class="price-stat-label">Best Price</div>
+                    <div class="price-stat-value best-price">$999.00</div>
+                </div>
+                <div class="price-stat">
+                    <div class="price-stat-label">Average Price</div>
+                    <div class="price-stat-value avg-price">$1,049.00</div>
+                </div>
+                <div class="price-stat">
+                    <div class="price-stat-label">You Save</div>
+                    <div class="price-stat-value savings">$100.00</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="view-toggle">
+                <button class="view-btn active">📋 List View</button>
+                <button class="view-btn">🗺️ Map View</button>
+            </div>
+            <div class="filters">
+                <select class="filter-btn">
+                    <option>Sort: Price (Low to High)</option>
+                    <option>Sort: Price (High to Low)</option>
+                    <option>Sort: Distance</option>
+                    <option>Sort: Rating</option>
+                </select>
+                <button class="filter-btn">✓ In Stock Only</button>
+                <button class="filter-btn">All Stores</button>
+            </div>
+        </div>
+
+        <div class="results-grid">
+            <!-- Best Deal Card -->
+            <div class="store-card best-deal" style="position: relative;">
+                <div class="best-deal-badge">🏆 BEST DEAL</div>
+                <div class="store-logo">🎯</div>
+                <div class="store-info">
+                    <div class="store-name">Target</div>
+                    <div class="store-details">📍 2.3 miles • 1234 Main St, Seattle, WA</div>
+                    <div class="store-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span>4.8 (2,341 reviews)</span>
+                    </div>
+                </div>
+                <div class="price-section">
+                    <div class="current-price">$999.00</div>
+                    <div class="original-price">$1,099.00</div>
+                    <div class="discount">Save $100 (9%)</div>
+                    <div class="stock-status in-stock">✓ In Stock</div>
+                </div>
+                <div class="actions">
+                    <button class="action-btn primary-btn" onclick="viewDetails('Target')">View Details</button>
+                    <button class="action-btn secondary-btn" onclick="getDirections('Target')">📍 Directions</button>
+                </div>
+            </div>
+
+            <!-- Regular Store Cards -->
+            <div class="store-card">
+                <div class="store-logo">🍎</div>
+                <div class="store-info">
+                    <div class="store-name">Apple Store</div>
+                    <div class="store-details">📍 1.8 miles • University Village, Seattle, WA</div>
+                    <div class="store-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span>4.9 (5,678 reviews)</span>
+                    </div>
+                </div>
+                <div class="price-section">
+                    <div class="current-price">$1,099.00</div>
+                    <div class="stock-status in-stock">✓ In Stock</div>
+                </div>
+                <div class="actions">
+                    <button class="action-btn primary-btn" onclick="viewDetails('Apple')">View Details</button>
+                    <button class="action-btn secondary-btn" onclick="getDirections('Apple')">📍 Directions</button>
+                </div>
+            </div>
+
+            <div class="store-card">
+                <div class="store-logo">📦</div>
+                <div class="store-info">
+                    <div class="store-name">Best Buy</div>
+                    <div class="store-details">📍 3.1 miles • Northgate Mall, Seattle, WA</div>
+                    <div class="store-rating">
+                        <span class="stars">⭐⭐⭐⭐</span>
+                        <span>4.3 (1,892 reviews)</span>
+                    </div>
+                </div>
+                <div class="price-section">
+                    <div class="current-price">$1,049.00</div>
+                    <div class="original-price">$1,099.00</div>
+                    <div class="discount">Save $50 (5%)</div>
+                    <div class="stock-status low-stock">⚠️ Low Stock</div>
+                </div>
+                <div class="actions">
+                    <button class="action-btn primary-btn" onclick="viewDetails('BestBuy')">View Details</button>
+                    <button class="action-btn secondary-btn" onclick="getDirections('BestBuy')">📍 Directions</button>
+                </div>
+            </div>
+
+            <div class="store-card">
+                <div class="store-logo">🛒</div>
+                <div class="store-info">
+                    <div class="store-name">Costco</div>
+                    <div class="store-details">📍 4.2 miles • 4401 4th Ave S, Seattle, WA</div>
+                    <div class="store-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span>4.7 (3,456 reviews)</span>
+                    </div>
+                </div>
+                <div class="price-section">
+                    <div class="current-price">$1,019.00</div>
+                    <div class="stock-status in-stock">✓ In Stock</div>
+                </div>
+                <div class="actions">
+                    <button class="action-btn primary-btn" onclick="viewDetails('Costco')">View Details</button>
+                    <button class="action-btn secondary-btn" onclick="getDirections('Costco')">📍 Directions</button>
+                </div>
+            </div>
+
+            <div class="store-card">
+                <div class="store-logo">📱</div>
+                <div class="store-info">
+                    <div class="store-name">T-Mobile</div>
+                    <div class="store-details">📍 2.7 miles • Capitol Hill, Seattle, WA</div>
+                    <div class="store-rating">
+                        <span class="stars">⭐⭐⭐⭐</span>
+                        <span>4.2 (987 reviews)</span>
+                    </div>
+                </div>
+                <div class="price-section">
+                    <div class="current-price">$1,099.00</div>
+                    <div class="stock-status in-stock">✓ In Stock</div>
+                </div>
+                <div class="actions">
+                    <button class="action-btn primary-btn" onclick="viewDetails('TMobile')">View Details</button>
+                    <button class="action-btn secondary-btn" onclick="getDirections('TMobile')">📍 Directions</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function viewDetails(store) {
+            console.log('Viewing details for:', store);
+            // In actual implementation, open modal with store details
+            alert(`Opening details for ${store}...`);
+        }
+
+        function getDirections(store) {
+            console.log('Getting directions to:', store);
+            // In actual implementation, open maps with directions
+            alert(`Opening directions to ${store}...`);
+        }
+
+        function searchAgain() {
+            const query = document.getElementById('newSearch').value;
+            if (query.trim()) {
+                window.location.href = `loading-state.html?item=${encodeURIComponent(query)}`;
+            }
+        }
+
+        // Enter key support
+        document.getElementById('newSearch').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchAgain();
+        });
+    </script>
+</body>
+
+</html>
