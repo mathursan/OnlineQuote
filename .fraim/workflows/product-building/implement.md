@@ -8,5 +8,4 @@
 > DO NOT EXECUTE.
 
 ## Intent
-To implement solutions based on approved design documents, ensuring minimal, testable code that meets requirements while following established patterns and maintaining code quality.
-Consult the architecture document for coding standards.
+To implement bug fixes and features using a phase-based approach guided by the AI Mentor, ensuring high-quality, tested code that meets requirements.

@@ -8,4 +8,4 @@
 > DO NOT EXECUTE.
 
 ## Intent
-To create comprehensive, detailed technical design documents that plan solutions before implementation, ensuring proper architecture, clear requirements, and stakeholder alignment through structured RFCs and bug fix templates.
+To create comprehensive technical design documents using a phase-based approach guided by the AI Mentor, ensuring proper architecture, clear requirements, and stakeholder alignment.
